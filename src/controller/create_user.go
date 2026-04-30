@@ -8,26 +8,19 @@ import (
 	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/configurations/validation"
 	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/controller/model/request"
 	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/model"
+	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/view"
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
-)
-
-var (
-	UserDomainInterface model.UserDomainInterface
 )
 
 func (uc *userControllerInterface) CreateUser(c *gin.Context) {
 	logger.Info("Init CreateUser controller",
-		zapcore.Field{
-			Key:    "journey",
-			String: "CreateUser",
-		},
-	)
+		zap.String("journey", "CreateUser"))
 
 	var userRequest request.UserRequest
 
 	if err := c.ShouldBindJSON(&userRequest); err != nil {
-		logger.Error("Error trying to validation user info", err)
+		logger.Error("Error trying to validation user info", err,
+			zap.String("journey", "CreateUser"))
 		errRest := validation.ValidateUserError(err)
 
 		c.JSON(errRest.Code, errRest)
@@ -40,6 +33,7 @@ func (uc *userControllerInterface) CreateUser(c *gin.Context) {
 		userRequest.Name,
 		userRequest.Age,
 	)
+
 	if err := uc.service.CreateUser(domain); err != nil {
 		c.JSON(err.Code, err)
 		return
@@ -47,5 +41,6 @@ func (uc *userControllerInterface) CreateUser(c *gin.Context) {
 
 	logger.Info("User created successfully",
 		zap.String("journey", "createUser"))
-	c.String(http.StatusOK, "")
+
+	c.JSON(http.StatusOK, view.ConvertDomainToResponse(domain))
 }
