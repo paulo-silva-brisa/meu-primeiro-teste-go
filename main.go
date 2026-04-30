@@ -3,9 +3,11 @@ package main
 import (
 	"log"
 
-	"github.com/bytedance/gopkg/util/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+
+	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/configurations/logger"
+
 	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/controller"
 	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/controller/routes"
 	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/model/service"
