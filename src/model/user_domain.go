@@ -3,6 +3,8 @@ package model
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
+	"fmt"
 )
 
 type UserDomainInterface interface {
