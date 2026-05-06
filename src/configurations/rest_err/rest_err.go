@@ -65,3 +65,10 @@ func NewForbiddenError(message string) *Erro {
 func (r *Erro) Error() string {
 	return r.Message
 }
+func NewInternalServerError(message string) *Erro {
+	return &Erro{
+		Message: message,
+		Err:     "internal_server_error",
+		Code:    http.StatusInternalServerError,
+	}
+}
