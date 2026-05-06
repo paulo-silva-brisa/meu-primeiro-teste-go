@@ -4,19 +4,20 @@ import (
 	"context"
 	"os"
 
-	"github.com/HunCoding/meu-primeiro-crud-go/src/configuration/logger"
-	"github.com/HunCoding/meu-primeiro-crud-go/src/configuration/rest_err"
-	"github.com/HunCoding/meu-primeiro-crud-go/src/model"
-	"go.uber.org/zap"
+	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/configurations/logger"
+	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/configurations/rest_err"
+	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/model"
 )
-const(
-	MONGODB_USER_DB = "MONgo_User_DB"
+
+const (
+	MONGO_USER_DB = "MONGODB_USER_DB"
 )
+
 func (ur *userRepository) CreateUser(
 	userDomain model.UserDomainInterface,
-) (model.UserDomainInterface, *rest_err.RestErr) {
-	
-	logger.Info("Init createUser repository",
+) (model.UserDomainInterface, *rest_err.Erro) {
+
+	logger.Info("Init createUser repository")
 	collection_name := os.Getenv(MONGODB_USER_DB)
 
 	collection := ur.databaseConnection.Collection(collection_name)
@@ -31,7 +32,7 @@ func (ur *userRepository) CreateUser(
 		return nil, rest_err.NewInternalServerError(err.Error())
 	}
 
-	userDomain.SetID(result.InsertID.(string))
+	userDomain.SetID(result.InsertedID.(string))
 
 	return userDomain, nil
 }

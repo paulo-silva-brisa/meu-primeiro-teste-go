@@ -3,7 +3,6 @@ module github.com/paulo-silva-brisa/meu-primeiro-teste-go
 go 1.25.8
 
 require (
-	github.com/bytedance/gopkg v0.1.4
 	github.com/gin-gonic/gin v1.12.0
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
@@ -14,6 +13,7 @@ require (
 )
 
 require (
+	github.com/bytedance/gopkg v0.1.4 // indirect
 	github.com/bytedance/sonic v1.15.0 // indirect
 	github.com/bytedance/sonic/loader v0.5.1 // indirect
 	github.com/cloudwego/base64x v0.1.6 // indirect
