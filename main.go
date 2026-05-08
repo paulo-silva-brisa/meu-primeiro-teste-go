@@ -1,33 +1,41 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
+	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/configurations/database/mongodb"
 	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/configurations/logger"
 
-	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/controller"
 	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/controller/routes"
-	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/model/service"
 )
 
 func main() {
-	logger.Info("About to start aplication")
+	logger.Info("About to start user application")
 
 	err := godotenv.Load()
+
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatalf(
+			"Error trying to connect to database, error +%s \n", err.Error())
+
 	}
 
-	service := service.NewUserDomainService()
-	userController := controller.NewUserControllerInterface(service)
+	database, err := mongodb.NewMongoDBConnection(context.Background())
+	if err != nil {
+		log.Fatalf(
+			"Error trying to connect to database, error=%s \n",
+			err.Error())
+		return
+	}
+
+	userController := initDependencies(database)
 
 	router := gin.Default()
-
 	routes.InitRouts(&router.RouterGroup, userController)
-
 	if err := router.Run(":8080"); err != nil {
 		log.Fatal(err)
 	}
