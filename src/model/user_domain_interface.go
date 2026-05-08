@@ -1,8 +1,6 @@
 package model
 
-import "github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/configurations/rest_err"
-
-type userDomainInterface interface {
+type UserDomainInterface interface {
 	GetEmail() string
 	GetPassword() string
 	GetAge() int8
@@ -11,11 +9,11 @@ type userDomainInterface interface {
 
 	SetID(string)
 
+	GetJSONValue() (string, error)
 	EncryptPassword()
-	GenerateToken() (string, *rest_err.Erro)
 }
 
-func newUserDomain(
+func NewUserDomain(
 	email, password, name string,
 	age int8,
 ) UserDomainInterface {
@@ -26,23 +24,4 @@ func newUserDomain(
 		Age:      age,
 	}
 
-}
-
-func NewUserLoginDomain(
-	email, password string,
-) UserDomainInterface {
-	return &userDomain{
-		Email:    email,
-		Password: password,
-	}
-}
-
-func NewUserUpdateDomain(
-	name string,
-	age int8,
-) UserDomainInterface {
-	return &userDomain{
-		Name: name,
-		Age:  age,
-	}
 }

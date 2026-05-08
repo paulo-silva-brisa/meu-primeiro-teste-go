@@ -9,12 +9,20 @@ import (
 
 	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/configurations/database/mongodb"
 	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/configurations/logger"
+
+	"github.com/paulo-silva-brisa/meu-primeiro-teste-go/src/controller/routes"
 )
 
 func main() {
 	logger.Info("About to start user application")
 
-	godotenv.Load()
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatalf(
+			"Error trying to connect to database, error +%s \n", err.Error())
+
+	}
 
 	database, err := mongodb.NewMongoDBConnection(context.Background())
 	if err != nil {
@@ -27,7 +35,7 @@ func main() {
 	userController := initDependencies(database)
 
 	router := gin.Default()
-
+	routes.InitRouts(&router.RouterGroup, userController)
 	if err := router.Run(":8080"); err != nil {
 		log.Fatal(err)
 	}
